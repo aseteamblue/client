@@ -54,8 +54,11 @@
                         </li>
                     </div>
                 </ul>
-        </div>
+            </div>
         <!-- End of Sidebar -->
+        </div>
+        <div class="col-sm-10">
+          <router-view></router-view>
         </div>
 
       </div>
