@@ -9,9 +9,14 @@ import VeeValidate from 'vee-validate'
 import App from './App'
 import store from './store'
 import router from './router'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue.js'
 
 // NOTE: workaround for VeeValidate + vuetable-2
 Vue.use(VeeValidate, { fieldsBagName: 'formFields' })
+Vue.use(BootstrapVue)
 
 router.beforeEach((to, from, next) => {
   store.commit('setLoading', true)
