@@ -36,8 +36,7 @@
                     </li>
                     <div class="menu">
                         <li>
-                          <i class = "icon icon ion-happy-outline"></i>
-                           <ion-icon name="alarm"></ion-icon>
+                            <i class="fab fa-vuejs"></i>
                             <a href="#">Dashboard</a>
                         </li>
                         <li>
