@@ -51,6 +51,9 @@
                         <li>
                             <a href="#">My wall</a>
                         </li>
+                        <li>
+                            <button v-on:click="logout">Logout</button>
+                        </li>
                     </div>
                 </ul>
             </div>
@@ -80,6 +83,13 @@
 <script>
 export default {
   name: 'AppLayout',
+
+  methods: {
+    logout: function () {
+      this.$store.dispatch('logout')
+        .then(() => this.$router.push('/auth/login'))
+    },
+  }
 }
 </script>
 

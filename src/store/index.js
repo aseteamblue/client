@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import app from './modules/app'
+import auth from './modules/auth'
 
 import * as getters from './getters'
 
@@ -11,7 +12,8 @@ const store = new Vuex.Store({
   strict: true, // process.env.NODE_ENV !== 'production',
   getters,
   modules: {
-    app
+    app,
+    auth
   },
   state: {},
   mutations: {}
