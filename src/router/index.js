@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import AppLayout from '../components/app/AppLayout'
 import AuthLayout from '../components/auth/AuthLayout'
 import lazyLoading from './lazyLoading'
+import store from '../store'
 
 Vue.use(Router)
 
@@ -28,8 +29,11 @@ const router = new Router({
       ],
     },
     {
-      name: 'Admin',
-      path: '/admin',
+      name: 'App',
+      path: '/',
+      meta: {
+        requiresAuth: true
+      },
       component: AppLayout,
       children: [
         {
@@ -46,6 +50,22 @@ const router = new Router({
     },
     { path: '*', redirect: '/404' }
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/auth/login')
+  } else {
+    if (!store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/')
+  }
 })
 
 router.beforeEach((to, from, next) => {
