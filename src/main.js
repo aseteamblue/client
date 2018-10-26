@@ -14,7 +14,7 @@ import Axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-vue/dist/bootstrap-vue.js'
-
+import config from '../config'
 // NOTE: workaround for VeeValidate + vuetable-2
 Vue.use(VeeValidate, { fieldsBagName: 'formFields' })
 Vue.use(BootstrapVue)
@@ -29,7 +29,7 @@ router.afterEach((to, from) => {
 })
 
 Vue.prototype.$http = Axios
-Vue.prototype.$http.defaults.baseURL = 'http://localhost:7070'
+Vue.prototype.$http.defaults.baseURL = config.api_url
 const token = localStorage.getItem('user-token')
 if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = token

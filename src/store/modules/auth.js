@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
+import config from '../../../config'
 const state = {
   status: '',
   token: localStorage.getItem('token') || '',
@@ -28,7 +29,7 @@ const actions = {
   login ({ commit }, user) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
-      axios({ url: 'http://localhost:7070/auth/login', data: user, method: 'POST' })
+      axios({ url: config.api_url + '/auth/login', data: user, method: 'POST' })
         .then(resp => {
           const token = resp.data.token
           const user = resp.data.user
