@@ -38,7 +38,7 @@ const router = new Router({
       children: [
         {
           name: 'dashboard',
-          path: 'dashboard',
+          path: '/',
           component: lazyLoading('dashboard/Dashboard'),
           default: true,
         },
