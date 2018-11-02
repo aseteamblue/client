@@ -43,13 +43,13 @@
                             <router-link to="/user">User's profile </router-link>
                         </li>
                         <li>
-                            <router-link to="#" class="active">Statistics</router-link>
+                            <router-link to="/statistics" class="active">Statistics</router-link>
                         </li>
                         <li>
-                            <router-link to="#">Calendar</router-link>
+                            <router-link to="/calendar">Calendar</router-link>
                         </li>
                         <li>
-                            <router-link to="#">My wall</router-link>
+                            <router-link to="/wall">My wall</router-link>
                         </li>
                         <li>
                             <button v-on:click="logout">Logout</button>
