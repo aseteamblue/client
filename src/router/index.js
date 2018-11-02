@@ -42,6 +42,12 @@ const router = new Router({
           component: lazyLoading('dashboard/Dashboard'),
           default: true,
         },
+        {
+          name: 'user',
+          path: '/user',
+          component: lazyLoading('user/User'),
+          default: false,
+        },
       ]
     },
     {
