@@ -4,12 +4,24 @@
     <p>Username: {{ username }}</p>
     <p>Thingy: {{ thingyName }}</p>
     <h2>Sessions</h2>
-    <div v-for="s in sessions" :key="s._id">
-      <p>Id: {{ s.id }}</p>
-      <p>Start: {{ s.dateStart }}</p>
-      <p>End: {{ s.dateEnd }}</p>
-      <p>Active: {{ s.active }}</p>
-    </div>
+    <table ref="table" border="1" id="tableSessions">
+      <thead>
+        <tr>
+          <td>Id</td>
+          <td>Start</td>
+          <td>End</td>
+          <td>Active</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="s in sessions" :key="s._id">
+          <td> {{ s.id }} </td>
+          <td> {{ s.dateStart }} </td>
+          <td> {{ s.dateEnd }} </td>
+          <td> {{ s.active }} </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -27,6 +39,7 @@ export default {
   created: function () {
     this.$store.dispatch('getUserSession')
   },
+
   methods: {
 
   }
