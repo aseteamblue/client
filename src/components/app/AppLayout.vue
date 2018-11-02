@@ -37,19 +37,19 @@
                     <div class="menu">
                         <li>
                             <i class="fab fa-vuejs"></i>
-                            <a href="#">Dashboard</a>
+                            <router-link to="/dashboard">Dashboard</router-link>
                         </li>
                         <li>
-                            <a href="#">User's profile </a>
+                            <router-link to="/user">User's profile </router-link>
                         </li>
                         <li>
-                            <a href="#" class="active">Statistics</a>
+                            <router-link to="#" class="active">Statistics</router-link>
                         </li>
                         <li>
-                            <a href="#">Calendar</a>
+                            <router-link to="#">Calendar</router-link>
                         </li>
                         <li>
-                            <a href="#">My wall</a>
+                            <router-link to="#">My wall</router-link>
                         </li>
                         <li>
                             <button v-on:click="logout">Logout</button>
