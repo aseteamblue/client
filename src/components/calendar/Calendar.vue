@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar">
+  <div class="calendar container-fluid">
     <h1>Calendar</h1>
   </div>
 </template>

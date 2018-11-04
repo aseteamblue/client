@@ -1,5 +1,5 @@
 <template>
-  <div class="error_404">
+  <div class="error_404 container-fluid">
     Oh shit...
   </div>
 </template>
