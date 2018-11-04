@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-layout">
+  <div class="auth container-fluid">
     <router-view></router-view>
   </div>
 </template>
@@ -11,5 +11,4 @@ export default {
 </script>
 
 <style lang="scss">
-
 </style>

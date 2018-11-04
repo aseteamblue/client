@@ -35,7 +35,7 @@ const actions = {
           const user = resp.data.user
           localStorage.setItem('token', token)
           // Add the following line:
-          axios.defaults.headers.common['Authorization'] = token
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
           commit('auth_success', { token, user })
           resolve(resp)
         })
