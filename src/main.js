@@ -30,9 +30,9 @@ router.afterEach((to, from) => {
 
 Vue.prototype.$http = Axios
 Vue.prototype.$http.defaults.baseURL = config.api_url
-const token = localStorage.getItem('user-token')
+const token = localStorage.getItem('token')
 if (token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token
 }
 
 Vue.config.productionTip = false
