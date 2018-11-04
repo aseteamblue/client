@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login container-fluid">
     <h1>Login</h1>
       <form method="post" @submit.prevent="login">
         <input type="text" name="u" v-model="username" placeholder="Username" required="required" />

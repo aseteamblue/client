@@ -1,5 +1,5 @@
 <template>
-  <div class="auth">
+  <div class="auth container-fluid">
     <router-view></router-view>
   </div>
 </template>

@@ -3,7 +3,8 @@ import config from '../../../config'
 import auth from './auth'
 
 const state = {
-  sessions: []
+  sessions: [],
+  sessionData: []
 }
 
 const mutations = {
@@ -12,6 +13,12 @@ const mutations = {
   },
   searchSession (sate) {
     state.sessions = []
+  },
+  newSessionData (state) {
+    state.sessionData = []
+  },
+  addSessionData (state, data) {
+    state.sessionData.push(data)
   }
 }
 
@@ -38,6 +45,37 @@ const actions = {
           let info = resp.data
           commit('addSession', info)
           resolve(resp)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  getLastData ({ commit }, sessionId) {
+    return new Promise((resolve, reject) => {
+      commit('newSessionData')
+      axios({ url: config.api_url + '/sessions/' + sessionId + '/gps/', method: 'GET' })
+        .then(resp => {
+          let dataLength = resp.data.length
+          let info = resp.data[dataLength - 1]
+          commit('addSessionData', info)
+          axios({ url: config.api_url + '/sessions/' + sessionId + '/humidities/', method: 'GET' })
+            .then(resp => {
+              let dataLength = resp.data.length
+              let info = resp.data[dataLength - 1]
+              commit('addSessionData', info)
+              axios({ url: config.api_url + '/sessions/' + sessionId + '/temperatures/', method: 'GET' })
+                .then(resp => {
+                  let dataLength = resp.data.length
+                  let info = resp.data[dataLength - 1]
+                  commit('addSessionData', info)
+                  resolve(resp)
+                }).catch(err => {
+                  reject(err)
+                })
+            }).catch(err => {
+              reject(err)
+            })
         })
         .catch(err => {
           reject(err)

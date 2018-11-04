@@ -1,13 +1,13 @@
 <template>
-  <div class="dashboard container-fluid">
-    <h1>Dashboard</h1>
+  <div class="statistics container-fluid">
+    <h1>Statistics</h1>
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'dashboard',
+  name: 'statistics',
 
   methods: {
 

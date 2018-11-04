@@ -8,19 +8,16 @@
               <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
                 <b-collapse is-nav id="nav_dropdown_collapse">
                   <b-navbar-nav>
-                    <b-nav-item href="#">Home</b-nav-item>
-                    <b-nav-item href="#">Link</b-nav-item>
+                    <b-nav-item><router-link to='/dashboard'>Home</router-link></b-nav-item>
+                    <b-nav-item><router-link to='/user'>User's profile</router-link></b-nav-item>
+                    <b-nav-item><router-link to='/statistics'>Statistics</router-link></b-nav-item>
+                    <b-nav-item><router-link to='/calendar'>Calendar</router-link></b-nav-item>
+                    <b-nav-item><router-link to='/wall'>My wall</router-link></b-nav-item>
                     <!-- Navbar dropdowns -->
-                    <b-nav-item-dropdown text="Lang" right>
-                      <b-dropdown-item href="#">EN</b-dropdown-item>
-                      <b-dropdown-item href="#">ES</b-dropdown-item>
-                      <b-dropdown-item href="#">RU</b-dropdown-item>
-                      <b-dropdown-item href="#">FA</b-dropdown-item>
-                    </b-nav-item-dropdown>
-                    <b-nav-item-dropdown text="User" right>
+                    <!-- <b-nav-item-dropdown text="My account" right>
                       <b-dropdown-item href="#">Account</b-dropdown-item>
                       <b-dropdown-item href="#">Settings</b-dropdown-item>
-                    </b-nav-item-dropdown>
+                    </b-nav-item-dropdown> -->
                   </b-navbar-nav>
                 </b-collapse>
               </b-navbar>
@@ -43,13 +40,13 @@
                             <router-link to="/user">User's profile </router-link>
                         </li>
                         <li>
-                            <router-link to="#" class="active">Statistics</router-link>
+                            <router-link to="/statistics" class="active">Statistics</router-link>
                         </li>
                         <li>
-                            <router-link to="#">Calendar</router-link>
+                            <router-link to="/calendar">Calendar</router-link>
                         </li>
                         <li>
-                            <router-link to="#">My wall</router-link>
+                            <router-link to="/wall">My wall</router-link>
                         </li>
                         <li>
                             <button v-on:click="logout">Logout</button>
