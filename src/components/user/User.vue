@@ -36,7 +36,7 @@ export default {
       sessions: this.$store.state.user.sessions
     }
   },
-  created: function () {
+  beforeCreate: function () {
     this.$store.dispatch('getUserSession')
   },
 
