@@ -23,6 +23,16 @@ const mutations = {
     state.status = ''
     state.token = ''
   },
+  refresh_request (state) {
+    state.status = 'loading_refresh'
+  },
+  refresh_success (state, token) {
+    state.status = 'success'
+    state.token = token
+  },
+  refresh_error (state) {
+    state.status = 'refresh_error'
+  }
 }
 
 const actions = {
@@ -52,6 +62,24 @@ const actions = {
       localStorage.removeItem('token')
       delete axios.defaults.headers.common['Authorization']
       resolve()
+    })
+  },
+  refresh ({ commit }) {
+    return new Promise((resolve, reject) => {
+      commit('refresh_request')
+      axios({ url: config.api_url + '/auth/refresh', method: 'POST' })
+        .then(resp => {
+          const token = resp.data.token
+          localStorage.setItem('token', token)
+          // Add the following line:
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+          commit('refresh_success', token)
+          resolve(resp)
+        })
+        .catch(err => {
+          commit('refresh_error')
+          reject(err)
+        })
     })
   }
 }

@@ -15,10 +15,11 @@
       </thead>
       <tbody>
         <tr v-for="s in sessions" :key="s.dateStart">
-          <td> <a v-on:click="seeDetails(s.id)">{{ s.id }}</a> </td>
+          <td> {{ s.id }} </td>
           <td> {{ s.dateStart }} </td>
           <td> {{ s.dateEnd }} </td>
           <td> {{ s.active }} </td>
+          <td v-if="s.active"> <button v-on:click="seeDetails(s.id)">Show</button></td>
         </tr>
       </tbody>
     </table>
@@ -65,13 +66,13 @@ export default {
   },
   methods: {
     seeDetails: function (id) {
-      clearInterval(this.$data.interval)
-      this.$data.interval = setInterval(function () {
+      clearInterval(this.interval)
+      this.interval = setInterval(function () {
         this.$store.dispatch('getLastData', id).then(() => {
-          this.$data.ok = true
-          this.$data.sessionData = this.$store.state.user.sessionData
+          this.ok = true
+          this.sessionData = this.$store.state.user.sessionData
         })
-      }.bind(this), 1000)
+      }.bind(this), 2000)
     }
   }
 }
