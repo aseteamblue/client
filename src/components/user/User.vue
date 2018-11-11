@@ -15,11 +15,11 @@
       </thead>
       <tbody>
         <tr v-for="s in sessions" :key="s.dateStart">
-          <td> {{ s.id }} </td>
+          <td> {{ s._id }} </td>
           <td> {{ s.dateStart }} </td>
           <td> {{ s.dateEnd }} </td>
           <td> {{ s.active }} </td>
-          <td v-if="s.active"> <button v-on:click="seeDetails(s.id)">Show</button></td>
+          <td v-if="s.active"> <button v-on:click="seeDetails(s._id)">Show</button></td>
         </tr>
       </tbody>
     </table>
