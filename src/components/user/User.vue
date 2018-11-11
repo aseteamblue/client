@@ -1,5 +1,5 @@
 <template>
-  <div class="user container-fluid">
+  <div class="user container-fluid scrollbar">
     <h1>User</h1>
     <p>Username: {{ username }}</p>
     <p>Thingy: {{ thingyName }}</p>
@@ -40,12 +40,17 @@
           </tr>
         </tbody>
       </table>
+
     </div>
+    <div id="map"></div>
   </div>
 </template>
 
-<script>
+<style lang="scss">
+  @import "../../../node_modules/leaflet/dist/leaflet.css";
+</style>
 
+<script>
 export default {
   name: 'user',
   data: function () {
@@ -60,6 +65,34 @@ export default {
   },
   beforeCreate: function () {
     this.$store.dispatch('getUserSession')
+  },
+  mounted: function () {
+    var L = require('leaflet')
+    var esri = require('esri-leaflet')
+
+    delete L.Icon.Default.prototype._getIconUrl
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+      iconUrl: require('leaflet/dist/images/marker-icon.png'),
+      shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+    })
+
+    const map = L.map('map', {
+      center: [46.552273, 6.633219],
+      zoom: 16
+    })
+    esri.basemapLayer('Streets').addTo(map)
+    L.marker([46.552273, 6.633219]).addTo(map)
+    var pointList = [[46.552273, 6.633219], [46.552944, 6.633691],
+      [46.554176, 6.634592], [46.556527, 6.638290]]
+    var firstpolyline = new L.Polyline(pointList, {
+      color: 'red',
+      weight: 3,
+      opacity: 0.5,
+      smoothFactor: 1
+    })
+    firstpolyline.addTo(map)
+    L.marker([46.556527, 6.638290]).addTo(map)
   },
   beforeDestroy: function () {
     clearInterval(this.$data.interval)
@@ -78,5 +111,12 @@ export default {
 }
 
 </script>
+
 <style lang="scss" scoped>
+  #map {
+      height: 50vh;
+      width: 50vw;
+      margin: 0;
+      padding: 0;
+    }
 </style>
