@@ -40,6 +40,9 @@
                             <router-link to="/user">User's profile </router-link>
                         </li>
                         <li>
+                            <router-link to="/activity" >Activity</router-link>
+                        </li>
+                        <li>
                             <router-link to="/statistics" class="active">Statistics</router-link>
                         </li>
                         <li>

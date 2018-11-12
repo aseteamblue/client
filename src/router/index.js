@@ -49,6 +49,12 @@ const router = new Router({
           default: false,
         },
         {
+          name: 'activity',
+          path: '/activity',
+          component: lazyLoading('activity/Activity'),
+          default: false,
+        },
+        {
           name: 'statistics',
           path: '/statistics',
           component: lazyLoading('statistics/Statistics'),
@@ -64,6 +70,12 @@ const router = new Router({
           name: 'wall',
           path: '/wall',
           component: lazyLoading('wall/Wall'),
+          default: false,
+        },
+        {
+          name: 'sessioninfo',
+          path: '/sessioninfo',
+          component: lazyLoading('activity/SessionInfo'),
           default: false,
         }
       ]

@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import app from './modules/app'
 import auth from './modules/auth'
 import user from './modules/user'
+import session from './modules/session'
 
 import * as getters from './getters'
 
@@ -15,7 +16,8 @@ const store = new Vuex.Store({
   modules: {
     app,
     auth,
-    user
+    user,
+    session
   },
   state: {},
   mutations: {}
