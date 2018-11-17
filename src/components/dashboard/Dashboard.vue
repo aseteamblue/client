@@ -14,8 +14,13 @@
 import * as d3 from 'd3'
 const data = [99, 71, 78, 25, 36, 92]
 export default {
-  name: 'non-vue-line-chart',
-  template: '<div></div>',
+
+  data: function () {
+    return {
+
+      dataOfSession: this.$store.state.user.sessions,
+    }
+  },
   mounted () {
     const svg = d3.select(this.$el)
       .append('svg')
