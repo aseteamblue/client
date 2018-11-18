@@ -45,18 +45,21 @@ export default {
   name: 'sessioninfo',
   data: function () {
     return {
-      session: []
+      haveData: false,
+      mapCreated: false,
+      session: [],
+      map: null
     }
   },
   beforeCreate: function () {
     this.$store.dispatch('getSessionData').then(() => {
       this.session = this.$store.state.session.sessionInfo
+      this.haveData = true
     })
   },
   mounted: function () {
     var L = require('leaflet')
     var esri = require('esri-leaflet')
-
     delete L.Icon.Default.prototype._getIconUrl
     L.Icon.Default.mergeOptions({
       iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -64,25 +67,36 @@ export default {
       shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
     })
 
-    const map = L.map('map', {
-      center: [46.552273, 6.633219],
+    this.map = L.map('map', {
       zoom: 16
     })
-    esri.basemapLayer('Streets').addTo(map)
-    L.marker([46.552273, 6.633219]).addTo(map)
-    var pointList = [[46.552273, 6.633219], [46.552944, 6.633691],
-      [46.554176, 6.634592], [46.556527, 6.638290]]
-    var firstpolyline = new L.Polyline(pointList, {
-      color: 'red',
-      weight: 3,
-      opacity: 0.5,
-      smoothFactor: 1
-    })
-    firstpolyline.addTo(map)
-    L.marker([46.556527, 6.638290]).addTo(map)
+    esri.basemapLayer('Streets').addTo(this.map)
+    this.mapCreated = true
+    this.drawLine()
   },
   methods: {
-
+    drawLine: function () {
+      var L = require('leaflet')
+      while (this.mapCreated !== true && this.haveData !== true) {
+        this.sleep(250)
+      }
+      var gpsPoints = this.$store.state.session.sessionData
+      var nbGps = gpsPoints.length
+      this.map.setView(gpsPoints[0].data, 16)
+      L.marker(gpsPoints[0].data).addTo(this.map)
+      var pointList = []
+      for (var i = 0; i < nbGps; i++) {
+        pointList.push(gpsPoints[i].data)
+      }
+      var firstpolyline = new L.Polyline(pointList, {
+        color: 'red',
+        weight: 3,
+        opacity: 0.5,
+        smoothFactor: 1
+      })
+      firstpolyline.addTo(this.map)
+      L.marker(gpsPoints[nbGps - 1].data).addTo(this.map)
+    }
   }
 }
 </script>
