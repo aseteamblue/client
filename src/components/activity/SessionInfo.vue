@@ -68,7 +68,8 @@ export default {
     })
 
     this.map = L.map('map', {
-      zoom: 16
+      center: [0, 0],
+      zoom: 0
     })
     esri.basemapLayer('Streets').addTo(this.map)
     this.mapCreated = true
@@ -82,20 +83,22 @@ export default {
       }
       var gpsPoints = this.$store.state.session.sessionData
       var nbGps = gpsPoints.length
-      this.map.setView(gpsPoints[0].data, 16)
-      L.marker(gpsPoints[0].data).addTo(this.map)
-      var pointList = []
-      for (var i = 0; i < nbGps; i++) {
-        pointList.push(gpsPoints[i].data)
+      if (nbGps !== 0) {
+        this.map.setView(gpsPoints[0].data, 16)
+        L.marker(gpsPoints[0].data).addTo(this.map)
+        var pointList = []
+        for (var i = 0; i < nbGps; i++) {
+          pointList.push(gpsPoints[i].data)
+        }
+        var firstpolyline = new L.Polyline(pointList, {
+          color: 'red',
+          weight: 3,
+          opacity: 0.5,
+          smoothFactor: 1
+        })
+        firstpolyline.addTo(this.map)
+        L.marker(gpsPoints[nbGps - 1].data).addTo(this.map)
       }
-      var firstpolyline = new L.Polyline(pointList, {
-        color: 'red',
-        weight: 3,
-        opacity: 0.5,
-        smoothFactor: 1
-      })
-      firstpolyline.addTo(this.map)
-      L.marker(gpsPoints[nbGps - 1].data).addTo(this.map)
     }
   }
 }
