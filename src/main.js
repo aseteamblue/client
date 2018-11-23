@@ -36,6 +36,14 @@ if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token
 }
 
+Vue.prototype.$http.interceptors.response.use(null, (error) => {
+  if (error.response.status === 401) {
+    store.dispatch('logout')
+      .then(() => router.push('/auth/login'))
+  }
+  return Promise.reject(error)
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
