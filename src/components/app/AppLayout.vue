@@ -89,16 +89,9 @@ export default {
       this.$store.dispatch('logout')
         .then(() => this.$router.push('/auth/login'))
     },
-    refreshToken: function () {
-      this.$store.dispatch('refresh')
-    }
   },
   created: function () {
-    /* this.refreshToken();
 
-    setInterval(function () {
-      this.refreshToken();
-    }.bind(this), 10000); */
   }
 }
 </script>
