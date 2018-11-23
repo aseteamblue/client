@@ -77,6 +77,14 @@ const router = new Router({
           path: '/sessioninfo',
           component: lazyLoading('activity/SessionInfo'),
           default: false,
+        },
+        {
+          name: 'logout',
+          path: '/logout',
+          meta: {
+            logout: true,
+          },
+          default: false,
         }
       ]
     },
@@ -91,6 +99,11 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
+      if (to.matched.some(record => record.meta.logout)) {
+        store.dispatch('logout')
+          .then(() => router.push('/auth/login'))
+        return
+      }
       next()
       return
     }

@@ -11,10 +11,14 @@ import store from './store'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import Axios from 'axios'
+import VueSidebarMenu from 'vue-sidebar-menu'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-vue/dist/bootstrap-vue.js'
 import config from '../config'
+
+Vue.use(VueSidebarMenu)
 
 // NOTE: workaround for VeeValidate + vuetable-2
 Vue.use(VeeValidate, { fieldsBagName: 'formFields' })
