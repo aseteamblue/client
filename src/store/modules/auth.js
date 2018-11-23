@@ -35,8 +35,10 @@ const mutations = {
   }
 }
 
+let interval = null
+
 const actions = {
-  login ({ commit }, user) {
+  login ({ commit, dispatch }, user) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       axios({ url: config.api_url + '/auth/login', data: user, method: 'POST' })
@@ -47,6 +49,7 @@ const actions = {
           // Add the following line:
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
           commit('auth_success', { token, user })
+          interval = setInterval(function () { dispatch('refresh') }, 10000)
           resolve(resp)
         })
         .catch(err => {
@@ -60,6 +63,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('logout')
       localStorage.removeItem('token')
+      clearInterval(interval)
       delete axios.defaults.headers.common['Authorization']
       resolve()
     })
@@ -67,9 +71,9 @@ const actions = {
   refresh ({ commit }) {
     return new Promise((resolve, reject) => {
       commit('refresh_request')
-      axios({ url: config.api_url + '/auth/refresh', method: 'POST' })
+      axios({ url: config.api_url + '/auth/refresh', method: 'GET' })
         .then(resp => {
-          const token = resp.data.token
+          const token = resp.data
           localStorage.setItem('token', token)
           // Add the following line:
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
