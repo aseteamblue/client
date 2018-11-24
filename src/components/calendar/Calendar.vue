@@ -1,30 +1,32 @@
-<template>
-  <div class="calendar container-fluid" id="calendar">
-    <h1>Calendar</h1>
-    <div class="calendar-parent">
-      <calendar-view
-        :events="events"
-        :show-date="showDate"
-        :time-format-options="{hour: 'numeric', minute:'2-digit'}"
-        :enable-drag-drop="false"
-        :disable-past="disablePast"
-        :disable-future="disableFuture"
-        :show-event-times="showEventTimes"
-        :display-period-uom="displayPeriodUom"
-        :display-period-count="displayPeriodCount"
-        :starting-day-of-week="startingDayOfWeek"
-        :class="themeClasses"
-        :period-changed-callback="periodChanged"
-        @click-date="onClickDay"
-        @click-event="onClickEvent"
-      >
-        <calendar-view-header slot="header" slot-scope="{ headerProps }" :header-props="headerProps" @input="setShowDate" />
-      </calendar-view>
-    </div>
-    <div v-if="message" class="notification is-success">{{ message }}</div>
+cal<template>
+ <div id="cal">
+  <div class="calendar-parent">
+      <h1>Calendar</h1>
+   <calendar-view
+    :events="events"
+    :show-date="showDate"
+    :time-format-options="{hour: 'numeric', minute:'2-digit'}"
+    :enable-drag-drop="false"
+    :disable-past="disablePast"
+    :disable-future="disableFuture"
+    :show-event-times="showEventTimes"
+    :display-period-uom="displayPeriodUom"
+    :display-period-count="displayPeriodCount"
+    :starting-day-of-week="startingDayOfWeek"
+    :class="themeClasses"
+    :period-changed-callback="periodChanged"
+    @click-date="onClickDay"
+    @click-event="onClickEvent"
+   >
+    <calendar-view-header slot="header" slot-scope="{ headerProps }" :header-props="headerProps" @input="setShowDate" />
+   </calendar-view>
   </div>
+    <div v-if="message" class="notification is-success">{{ message }}</div>
+ </div>
 </template>
 <script>
+import config from '../../../config'
+// For testing against the published version
 import {
   CalendarView,
   CalendarViewHeader,
@@ -33,7 +35,7 @@ import {
 require('vue-simple-calendar/static/css/default.css')
 
 export default {
-  name: 'calendar',
+  name: 'Cal',
   components: {
     CalendarView,
     CalendarViewHeader,
@@ -54,79 +56,8 @@ export default {
       newEventStartDate: '',
       newEventEndDate: '',
       useDefaultTheme: true,
-      events: [
-        {
-          id: 'e0',
-          startDate: '2018-01-05',
-        },
-        {
-          id: 'e1',
-          startDate: this.thisMonth(15, 18, 30),
-        },
-        {
-          id: 'e2',
-          startDate: this.thisMonth(15),
-          title: 'Single-day event with a long title',
-        },
-        {
-          id: 'e3',
-          startDate: this.thisMonth(7, 9, 25),
-          endDate: this.thisMonth(10, 16, 30),
-          title: 'Multi-day event with a long title and times',
-        },
-        {
-          id: 'e4',
-          startDate: this.thisMonth(20),
-          title: 'My Birthday!',
-          classes: 'birthday',
-          url: 'https://en.wikipedia.org/wiki/Birthday',
-        },
-        {
-          id: 'e5',
-          startDate: this.thisMonth(5),
-          endDate: this.thisMonth(12),
-          title: 'Multi-day event',
-          classes: 'purple',
-        },
-        {
-          id: 'foo',
-          startDate: this.thisMonth(29),
-          title: 'Same day 1',
-        },
-        {
-          id: 'e6',
-          startDate: this.thisMonth(29),
-          title: 'Same day 2',
-          classes: 'orange',
-        },
-        {
-          id: 'e7',
-          startDate: this.thisMonth(29),
-          title: 'Same day 3',
-        },
-        {
-          id: 'e8',
-          startDate: this.thisMonth(29),
-          title: 'Same day 4',
-          classes: 'orange',
-        },
-        {
-          id: 'e9',
-          startDate: this.thisMonth(29),
-          title: 'Same day 5',
-        },
-        {
-          id: 'e10',
-          startDate: this.thisMonth(29),
-          title: 'Same day 6',
-          classes: 'orange',
-        },
-        {
-          id: 'e11',
-          startDate: this.thisMonth(29),
-          title: 'Same day 7',
-        },
-      ],
+      useHolidayTheme: false,
+      events: []
     }
   },
   computed: {
@@ -138,17 +69,21 @@ export default {
     },
     themeClasses () {
       return {
-        'theme-default': this.useDefaultTheme
+        'theme-default': './default.css'
       }
     },
   },
   mounted () {
     this.newEventStartDate = this.isoYearMonthDay(this.today())
     this.newEventEndDate = this.isoYearMonthDay(this.today())
+    this.getEvents()
   },
   methods: {
     periodChanged (range, eventSource) {
-
+      // Demo does nothing with this information, just including the method to demonstrate how
+      // you can listen for changes to the displayed range and react to them (by loading events, etc.)
+      console.log(eventSource)
+      console.log(range)
     },
     thisMonth (d, h, m) {
       const t = new Date()
@@ -172,24 +107,36 @@ export default {
       })
       this.message = 'You added an event!'
     },
+    getEvents () {
+      let sessions = this.$store.state.user.sessions
+      sessions.forEach((session) => {
+        this.events.push({
+          startDate: session.dateStart,
+          endDate: session.dateEnd,
+          id: session._id,
+          classes: 'orange',
+          url: config.api_url + '/activity'
+        })
+      })
+    }
   },
 }
 </script>
 
-<style scoped>
+<style>
 html,
 body {
   height: 100%;
   margin: 0;
   background-color: #f7fcff;
 }
-#calendar {
+#cal {
   display: flex;
   flex-direction: column;
   font-family: Calibri, sans-serif;
   width: 95vw;
   min-width: 30rem;
-  max-width: 100rem;
+  max-width: 50rem;
   min-height: 40rem;
   margin-left: auto;
   margin-right: auto;
@@ -210,15 +157,5 @@ body {
 .cv-wrapper.period-month.periodCount-3 .cv-week,
 .cv-wrapper.period-year .cv-week {
   min-height: 6rem;
-}
-/* These styles are optional, to illustrate the flexbility of styling the calendar purely with CSS. */
-/* Add some styling for events tagged with the "birthday" class */
-.calendar .event.birthday {
-  background-color: #e0f0e0;
-  border-color: #d7e7d7;
-}
-.calendar .event.birthday::before {
-  content: "\1F382";
-  margin-right: 0.5em;
 }
 </style>
