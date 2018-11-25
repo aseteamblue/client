@@ -16,6 +16,7 @@ having to override as much.
 
 .theme-default .cv-header .periodLabel {
 	font-size: 1.5em;
+	font-weight: bold;
 }
 
 .theme-default .cv-header button {
@@ -40,7 +41,7 @@ having to override as much.
 }
 
 .theme-default .cv-day.outsideOfMonth {
-	background-color: #f7f7f7;
+	background-color: #e7e7e7;
 }
 
 /* Events */
@@ -48,7 +49,7 @@ having to override as much.
 .theme-default .cv-event {
 	border-color: #e0e0f0;
 	border-radius: 0.5em;
-	background-color: #e7e7ff;
+	background-color: #f7e7ff;
 	text-overflow: ellipsis;
 }
 
@@ -96,4 +97,36 @@ having to override as much.
 
 .theme-default .cv-day.draghover {
 	box-shadow: inset 0 0 0.2em 0.2em yellow;
+}
+
+#global {
+  background-color: #f7fcff;
+  min-height: 100%;
+  margin-left: 1px;
+  padding-left: 1%;
+  padding-top: 1%;
+}
+#cal {
+  display: flex;
+  flex-direction: column;
+  font-family: Calibri, sans-serif;
+  height: 80vh;
+  width: auto;
+}
+.calendar-parent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  max-height: 80vh;
+  background-color: white;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+/* For long calendars, ensure each week gets sufficient height. The body of the calendar will scroll if needed */
+.cv-wrapper.period-month.periodCount-2 .cv-week,
+.cv-wrapper.period-month.periodCount-3 .cv-week,
+.cv-wrapper.period-year .cv-week {
+  min-height: 6rem;
 }
