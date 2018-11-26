@@ -42,6 +42,9 @@ const actions = {
       axios({ url: config.api_url + '/sessions/' + sessionId, method: 'GET' })
         .then(resp => {
           let info = resp.data
+          info['startDate'] = info['dateStart']
+          info['endDate'] = info['dateEnd']
+          info['id'] = info['_id']
           commit('addSession', info)
           resolve(resp)
         })

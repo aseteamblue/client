@@ -52,7 +52,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    this.$store.dispatch('getSessionData').then(() => {
+    this.$store.dispatch('getSessionData', 'gps').then(() => {
       this.session = this.$store.state.session.sessionInfo
       this.haveData = true
     })
