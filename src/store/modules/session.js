@@ -23,13 +23,13 @@ const actions = {
   newSession ({ commit, router }) {
 
   },
-  getSessionData ({ commit }) {
+  getSessionData ({ commit }, typeOfMeasure) {
     return new Promise((resolve, reject) => {
       var id = state.sessionId
       axios({ url: config.api_url + '/sessions/' + id, method: 'GET' })
         .then(resp => {
           commit('loadSessionInfo', resp.data)
-          axios({ url: config.api_url + '/sessions/' + id + '/gps/', method: 'GET' })
+          axios({ url: config.api_url + '/sessions/' + id + '/' + typeOfMeasure + '/', method: 'GET' })
             .then(resp => {
               commit('loadSessionData', resp.data)
               resolve(resp)
