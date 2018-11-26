@@ -69,7 +69,8 @@ export default {
 
     this.map = L.map('map', {
       center: [0, 0],
-      zoom: 0
+      zoom: 0,
+      setView: true
     })
     esri.basemapLayer('Streets').addTo(this.map)
     this.mapCreated = true
@@ -84,7 +85,7 @@ export default {
       var gpsPoints = this.$store.state.session.sessionData
       var nbGps = gpsPoints.length
       if (nbGps !== 0) {
-        this.map.setView(gpsPoints[0].data, 16)
+        this.map.flyTo(new L.LatLng(gpsPoints[0].data.lat, gpsPoints[0].data.lng), 16)
         L.marker(gpsPoints[0].data).addTo(this.map)
         var pointList = []
         for (var i = 0; i < nbGps; i++) {
