@@ -85,7 +85,6 @@ export default {
       var gpsPoints = this.$store.state.session.sessionData
       var nbGps = gpsPoints.length
       if (nbGps !== 0) {
-        this.map.flyTo(new L.LatLng(gpsPoints[0].data.lat, gpsPoints[0].data.lng), 16)
         L.marker(gpsPoints[0].data).addTo(this.map)
         var pointList = []
         for (var i = 0; i < nbGps; i++) {
@@ -99,6 +98,7 @@ export default {
         })
         firstpolyline.addTo(this.map)
         L.marker(gpsPoints[nbGps - 1].data).addTo(this.map)
+        this.map.flyTo(new L.LatLng(gpsPoints[0].data.lat, gpsPoints[0].data.lng), 16)
       }
     }
   }
