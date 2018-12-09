@@ -10,7 +10,7 @@
         <b-col>
           <div class="text-center">
             <i class="fas fa-user fa-6x"></i>
-            <h3>Johan Jobin</h3>
+            <h3>{{ username }}</h3>
             <p>Welcome on Thingy Sport</p>
           </div>
         </b-col>
@@ -28,17 +28,17 @@
           <b-row>
             <b-col>
               <b-card bg-variant="primary" text-variant="white" header="Total distance" class="text-center" style="height:100px;">
-                <p class="card-text">300 km</p>
+                <p class="card-text">{{ totalDistance }}</p>
               </b-card>
             </b-col>
             <b-col>
               <b-card bg-variant="info" text-variant="white" header="Total time" class="text-center" style="height: 100px;">
-                <p class="card-text">jfdlkjfl.</p>
+                <p class="card-text">{{ totalTime }}</p>
               </b-card>
             </b-col>
             <b-col>
               <b-card bg-variant="success" text-variant="white" header="Nb. of sessions" class="text-center" style="height: 100px;">
-                <p class="card-text">55</p>
+                <p class="card-text">{{ sessions.length }}</p>
               </b-card>
             </b-col>
           </b-row>
@@ -57,9 +57,10 @@
               <div id="result_panel">
                 <div class="panel-body">
                   <ul class="list-group">
-                    <li class="list-group-item"><strong>Signature
-                      Accommodations</strong>(1480m)
+                    <li class="list-group-item" v-for="s in trophies" :key="s.dateStart">
+                    <strong>{{s}}</strong>
                     </li>
+                    <strong v-if="trophies.length === 0">No trophy yet</strong>
                   </ul>
               </div>
             </div>
@@ -75,7 +76,11 @@
           <div class="text-center">
             <i class="fas fa-running fa-2x"></i>
             <h3>5 last sessions</h3>
-            <datatable :columns="columns" :data="rows"></datatable>
+            <b-table :per-page="5" striped hover :items="rows" :fields="fields">
+            <template slot="seeDetails" slot-scope="row">
+              <b-button size="sm" class="mr-2">{{row.item.id}}</b-button>
+            </template>
+            </b-table>
           </div>
         </b-col>
       </b-row>
@@ -100,39 +105,20 @@ export default {
   name: 'dashboard',
   data () {
     return {
-      columns: [
-        { label: 'Title', field: 'id', align: 'center', filterable: false },
-        { label: 'Total Distance', field: 'user.username' },
-        { label: 'Duration', field: 'user.first_name' },
-        { label: 'Date', field: 'user.last_name' },
-        { label: 'See more', field: 'user.email' }
-      ],
-      rows: [{
-        'id': 1,
-        'user': {
-          'username': 'dprice0',
-          'first_name': 'Daniel',
-          'last_name': 'Price',
-          'email': 'dprice0@blogs.com'
-        },
-        'address': '3 Toban Park',
-        'city': 'Pocatello',
-        'state': 'Idaho'
-      },
-      {
-        'id': 1,
-        'user': {
-          'username': 'dprice0',
-          'first_name': 'Daniel',
-          'last_name': 'Price',
-          'email': 'dprice0@blogs.com'
-        },
-        'address': '3 Toban Park',
-        'city': 'Pocatello',
-        'state': 'Idaho'
-      }],
+      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],
+      rows: this.$store.state.user.sessions,
+      username: this.$store.state.auth.user.username,
+      totalDistance: this.$store.state.auth.user.totalDistance,
+      totalTime: this.$store.state.auth.user.totalTime,
+      user: this.$store.state.auth.user,
+      trophies: this.$store.state.auth.user.trophies,
+      thingyName: this.$store.state.auth.user.thingyUri,
+      sessions: this.$store.state.user.sessions,
 
     }
+  },
+  beforeCreate: function () {
+    this.$store.dispatch('getUserSession')
   },
 
   methods: {
