@@ -157,7 +157,7 @@ export default {
       let dateSplit = this.newSessionDate.split('-')
       let d = new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, dateSplit[2])
       let today = new Date()
-      return (d.getDate() <= today.getDate() && d.getMonth() <= today.getMonth() && d.getYear() <= today.getYear())
+      return (d <= today)
     }
   },
   mounted () {
