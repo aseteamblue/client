@@ -76,7 +76,7 @@
           <div class="text-center">
             <i class="fas fa-running fa-2x"></i>
             <h3>5 last sessions</h3>
-            <b-table striped hover :items="rows.slice(0,5)" :fields="fields">
+            <b-table responsive striped hover :items="rows.slice(0,5)" :fields="fields">
             <template slot="seeDetails" slot-scope="row">
               <b-button size="sm" class="mr-2">{{row.item.id}}</b-button>
             </template>
