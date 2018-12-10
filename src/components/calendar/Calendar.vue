@@ -21,6 +21,7 @@
         >
           <calendar-view-header slot="header" slot-scope="{ headerProps }" :header-props="headerProps" @input="setShowDate" />
         </calendar-view>
+        {{ names }}
       </div>
       <div>
         <!-- Modal Components -->
@@ -38,7 +39,23 @@
             </b-form-group>
             <b-form-group label="<b>Date</b>">
               <b-form-input type="date"
+              :state="dateState"
               v-model="newSessionDate"></b-form-input>
+            </b-form-group>
+            <b-form-group label="<b>Time</b>">
+              Start
+              <b-form-input type="time"
+              :state="startTimeState"
+              v-model="newSessionStartTime"></b-form-input>
+              <br>End
+              <b-form-input type="time"
+              :state="endTimeState"
+              v-model="newSessionEndTime"></b-form-input>
+            </b-form-group>
+            <b-form-group label="<b>Total distance in km</b>" v-if="isPastSession">
+              <b-form-input type="number"
+              placeholder="Enter a number"
+              v-model="newSessionTotalDistance"></b-form-input>
             </b-form-group>
             <b-form-group label="<b>Share this session</b>">
               <b-form-radio-group
@@ -56,8 +73,8 @@
             <b>Title: </b>{{ modalInfoTitle }}<br>
             <b>Start: </b>{{ modalInfoStart }}<br>
             <b>End: </b>{{ modalInfoEnd }}<br>
-            <b>Distance: </b>{{ modalInfoDistance }}<br>
-            <b>Speed: </b>{{ modalInfoSpeed }}<br>
+            <b>Distance: </b>{{ modalInfoDistance }} km<br>
+            <b>Speed: </b>{{ modalInfoSpeed }} km/h<br>
           </div>
         </b-modal>
       </div>
@@ -99,7 +116,10 @@ export default {
       events: this.$store.state.user.sessions,
       newSessionTitle: '',
       newSessionDate: '',
+      newSessionStartTime: '',
+      newSessionEndTime: '',
       newSessionIsPublic: true,
+      newSessionTotalDistance: '',
       modalInfoTitle: '',
       modalInfoStart: '',
       modalInfoEnd: '',
@@ -125,6 +145,21 @@ export default {
     },
     titleState () {
       return this.newSessionTitle.length > 0
+    },
+    startTimeState () {
+      return this.newSessionStartTime.length > 0
+    },
+    endTimeState () {
+      return this.newSessionEndTime.length > 0 && this.newSessionStartTime <= this.newSessionEndTime
+    },
+    dateState () {
+      return this.newSessionDate.length > 0
+    },
+    isPastSession () {
+      let dateSplit = this.newSessionDate.split('-')
+      let d = new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, dateSplit[2])
+      let today = new Date()
+      return (d.getDate() <= today.getDate() || d.getMonth() <= today.getMonth() || d.getYear() <= today.getYear())
     }
   },
   mounted () {
@@ -156,20 +191,34 @@ export default {
     },
     clear () {
       this.newSessionTitle = ''
+      this.newSessionStartTime = ''
+      this.newSessionEndTime = ''
+      this.newSessionTotalDistance = ''
     },
     handleOk (evt) {
       // Prevent modal from closing
       evt.preventDefault()
-      if (!this.newSessionTitle) {
-        alert('Please enter a title')
-      } else if (!this.newSessionDate) {
-        alert('Please enter a date')
-      } else {
+      if (this.newSessionTitle.length > 0 &&
+          this.newSessionStartTime.length > 0 &&
+          this.newSessionEndTime.length > 0 &&
+          this.newSessionStartTime <= this.newSessionEndTime
+      ) {
         this.handleSubmit()
       }
     },
     handleSubmit () {
-      this.names.push(this.newSessionTitle + this.newSessionDate + this.newSessionIsPublic)
+      let dateSplit = this.newSessionDate.split('-')
+      let startTimeSplit = this.newSessionStartTime.split(':')
+      let endTimeSplit = this.newSessionEndTime.split(':')
+      let session = {
+        title: this.newSessionTitle,
+        startDate: new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, parseInt(dateSplit[2]) - 1, startTimeSplit[0], startTimeSplit[1]),
+        endDate: new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, parseInt(dateSplit[2]) - 1, endTimeSplit[0], endTimeSplit[1]),
+        share: this.newSessionIsPublic,
+        totalDistance: (this.newSessionTotalDistance) ? parseFloat(this.newSessionTotalDistance) : 0
+      }
+      this.$store.dispatch('postSession', session)
+      this.events.push(session)
       this.clear()
       this.$refs.modal.hide()
     }

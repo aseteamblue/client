@@ -10,7 +10,7 @@ const mutations = {
   addSession (state, data) {
     state.sessions.push(data)
   },
-  searchSession (sate) {
+  searchSession (state) {
     state.sessions = []
   },
   newSessionData (state) {
@@ -78,6 +78,17 @@ const actions = {
             }).catch(err => {
               reject(err)
             })
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  postSession ({ commit }, session) {
+    return new Promise((resolve, reject) => {
+      axios.post(config.api_url + '/sessions', session)
+        .then(resp => {
+          commit('addSession', resp.data)
         })
         .catch(err => {
           reject(err)
