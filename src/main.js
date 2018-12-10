@@ -17,7 +17,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-vue/dist/bootstrap-vue.js'
 import config from '../config'
-window.Vue = Vue
 Vue.use(VueSidebarMenu)
 
 // NOTE: workaround for VeeValidate + vuetable-2

@@ -76,7 +76,7 @@
           <div class="text-center">
             <i class="fas fa-running fa-2x"></i>
             <h3>5 last sessions</h3>
-            <b-table :per-page="5" striped hover :items="rows" :fields="fields">
+            <b-table striped hover :items="rows" :fields="fields">
             <template slot="seeDetails" slot-scope="row">
               <b-button size="sm" class="mr-2">{{row.item.id}}</b-button>
             </template>
@@ -96,10 +96,6 @@
 </template>
 
 <script>
-
-import DatatableFactory from 'vuejs-datatable'
-import Vue from 'vue'
-Vue.use(DatatableFactory)
 
 export default {
   name: 'dashboard',
