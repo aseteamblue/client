@@ -4,7 +4,7 @@ import config from '../../../config'
 const state = {
   status: '',
   token: localStorage.getItem('token') || '',
-  user: {},
+  user: JSON.parse(localStorage.getItem('user') || '{}') || {},
 }
 
 const mutations = {
@@ -46,6 +46,7 @@ const actions = {
           const token = resp.data.token
           const user = resp.data.user
           localStorage.setItem('token', token)
+          localStorage.setItem('user', JSON.stringify(user))
           // Add the following line:
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
           commit('auth_success', { token, user })
@@ -63,6 +64,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('logout')
       localStorage.removeItem('token')
+      localStorage.removeItem('user')
       clearInterval(interval)
       delete axios.defaults.headers.common['Authorization']
       resolve()

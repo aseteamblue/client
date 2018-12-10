@@ -1,6 +1,5 @@
 <template>
   <div class="app-layout" v-bind:class="{ collapsed: isCollapsed }">
-<ion-icon name="add"></ion-icon>
     <sidebar-menu width="200px" :menu="menu" @collapse="onCollapse" />
     <router-view></router-view>
       <!-- End of a row -->
