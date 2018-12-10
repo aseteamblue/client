@@ -37,7 +37,7 @@
               </b-card>
             </b-col>
             <b-col>
-              <b-card bg-variant="success" text-variant="white" header="Nb. of sessions" class="text-center" style="height: 100px;">
+              <b-card bg-variant="success" text-variant="white" header="Nb. of sess." class="text-center" style="height: 100px;">
                 <p class="card-text">{{ sessions.length }}</p>
               </b-card>
             </b-col>
@@ -76,7 +76,7 @@
           <div class="text-center">
             <i class="fas fa-running fa-2x"></i>
             <h3>5 last sessions</h3>
-            <b-table striped hover :items="rows" :fields="fields">
+            <b-table striped hover :items="rows.slice(0,5)" :fields="fields">
             <template slot="seeDetails" slot-scope="row">
               <b-button size="sm" class="mr-2">{{row.item.id}}</b-button>
             </template>
