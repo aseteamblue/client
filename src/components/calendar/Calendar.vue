@@ -21,7 +21,6 @@
         >
           <calendar-view-header slot="header" slot-scope="{ headerProps }" :header-props="headerProps" @input="setShowDate" />
         </calendar-view>
-        {{ names }}
       </div>
       <div>
         <!-- Modal Components -->
@@ -124,8 +123,7 @@ export default {
       modalInfoStart: '',
       modalInfoEnd: '',
       modalInfoDistance: '',
-      modalInfoSpeed: '',
-      names: []
+      modalInfoSpeed: ''
     }
   },
   beforeCreate: function () {
