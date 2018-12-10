@@ -157,7 +157,7 @@ export default {
       let dateSplit = this.newSessionDate.split('-')
       let d = new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, dateSplit[2])
       let today = new Date()
-      return (d.getDate() <= today.getDate() || d.getMonth() <= today.getMonth() || d.getYear() <= today.getYear())
+      return (d.getDate() <= today.getDate() && d.getMonth() <= today.getMonth() && d.getYear() <= today.getYear())
     }
   },
   mounted () {
@@ -210,8 +210,8 @@ export default {
       let endTimeSplit = this.newSessionEndTime.split(':')
       let session = {
         title: this.newSessionTitle,
-        startDate: new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, parseInt(dateSplit[2]) - 1, startTimeSplit[0], startTimeSplit[1]),
-        endDate: new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, parseInt(dateSplit[2]) - 1, endTimeSplit[0], endTimeSplit[1]),
+        startDate: new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, parseInt(dateSplit[2]), parseInt(startTimeSplit[0]) + 1, startTimeSplit[1]),
+        endDate: new Date(dateSplit[0], parseInt(dateSplit[1]) - 1, parseInt(dateSplit[2]), parseInt(endTimeSplit[0]) + 1, endTimeSplit[1]),
         share: this.newSessionIsPublic,
         totalDistance: (this.newSessionTotalDistance) ? parseFloat(this.newSessionTotalDistance) : 0
       }
