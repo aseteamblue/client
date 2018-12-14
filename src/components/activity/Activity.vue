@@ -2,11 +2,9 @@
   <div class="activity container-fluid scrollbar">
     <h1>Activity</h1>
     <button type="button" class="btn btn-secondary" v-on:click="changeView">{{ textButton }}</button>
-    <br/>
-    <button type="button" class="btn btn-primary" v-on:click="newRun()">New Run</button>
     <br/><br/>
     <list-view :sessions="sessions" v-if="isListView"></list-view>
-    <calendar-view :sessions="sessions" v-else></calendar-view>
+    <calendar-view v-else></calendar-view>
   </div>
 </template>
 

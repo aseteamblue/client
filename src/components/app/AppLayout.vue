@@ -33,16 +33,6 @@ export default {
           icon: 'fas fa-hiking',
         },
         {
-          href: '/statistics',
-          title: 'Statistics',
-          icon: 'fas fa-chart-bar',
-        },
-        {
-          href: '/calendar',
-          title: 'Calendar',
-          icon: 'fas fa-calendar-alt',
-        },
-        {
           href: '/wall',
           title: 'My wall',
           icon: 'fas fa-newspaper',

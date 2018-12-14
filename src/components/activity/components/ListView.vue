@@ -1,23 +1,13 @@
 <template>
-  <table ref="table" border="1" id="tableSessions">
-    <thead>
-      <tr>
-        <td>Id</td>
-        <td>Start</td>
-        <td>End</td>
-        <td>Active</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="s in sessions" :key="s.dateStart">
-        <td> {{ s._id }} </td>
-        <td> {{ s.dateStart }} </td>
-        <td> {{ s.dateEnd }} </td>
-        <td> {{ s.active }} </td>
-        <td v-if="!s.active"> <button v-on:click="seeDetails(s._id)">Show</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="text-center">
+    <i class="fas fa-running fa-2x"></i>
+    <h3>All sessions</h3>
+    <b-table responsive striped hover :items="sessions" :fields="fields">
+    <template slot="seeDetails" slot-scope="row">
+      <b-button size="sm" class="mr-2" v-on:click="seeDetails(row.item.id)">{{row.item.id}}</b-button>
+    </template>
+    </b-table>
+  </div>
 </template>
 
 <script>
@@ -28,6 +18,11 @@ export default {
       type: Array,
       required: true
     // default: 'Lucas'
+    }
+  },
+  data () {
+    return {
+      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],
     }
   },
   methods: {

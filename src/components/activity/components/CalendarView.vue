@@ -1,6 +1,5 @@
 <template>
   <div id="global" class="container-fluid">
-    <h1>Calendar</h1>
     <div id="cal">
       <div class="calendar-parent">
         <calendar-view
