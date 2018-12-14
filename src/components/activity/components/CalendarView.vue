@@ -175,12 +175,9 @@ export default {
       this.$refs.modal.show()
     },
     onClickEvent (e) {
-      this.modalInfoTitle = e.title
-      this.modalInfoStart = e.startDate.toLocaleString()
-      this.modalInfoEnd = e.endDate.toLocaleString()
-      this.modalInfoDistance = e.originalEvent.totalDistance
-      this.modalInfoSpeed = e.originalEvent.averageSpeed
-      this.$refs.modalInfoSession.show()
+      this.$store.dispatch('sessionDetails', e.id).then(() => {
+        this.$router.push('sessioninfo')
+      })
     },
     setShowDate (d) {
       this.message = `Changing calendar view to ${d.toLocaleDateString()}`
