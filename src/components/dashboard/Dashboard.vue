@@ -78,7 +78,7 @@
             <h3>5 last sessions</h3>
             <b-table responsive striped hover :items="rows.slice(0,5)" :fields="fields">
             <template slot="seeDetails" slot-scope="row">
-              <b-button size="sm" class="mr-2">{{row.item.id}}</b-button>
+              <b-button size="sm" class="mr-2" v-on:click="seeDetails(row.item.id)">{{row.item.id}}</b-button>
             </template>
             </b-table>
           </div>
@@ -118,7 +118,11 @@ export default {
   },
 
   methods: {
-
+    seeDetails: function (id) {
+      this.$store.dispatch('sessionDetails', id).then(() => {
+        this.$router.push('sessioninfo')
+      })
+    },
   }
 }
 

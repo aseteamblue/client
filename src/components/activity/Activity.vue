@@ -1,51 +1,41 @@
 <template>
   <div class="activity container-fluid scrollbar">
     <h1>Activity</h1>
-    <br/>
-    <button type="button" class="btn btn-primary" v-on:click="newRun()">New Run</button>
+    <button type="button" class="btn btn-secondary" v-on:click="changeView">{{ textButton }}</button>
     <br/><br/>
-    <table ref="table" border="1" id="tableSessions">
-      <thead>
-        <tr>
-          <td>Id</td>
-          <td>Start</td>
-          <td>End</td>
-          <td>Active</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="s in sessions" :key="s.dateStart">
-          <td> {{ s._id }} </td>
-          <td> {{ s.dateStart }} </td>
-          <td> {{ s.dateEnd }} </td>
-          <td> {{ s.active }} </td>
-          <td v-if="!s.active"> <button v-on:click="seeDetails(s._id)">Show</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <list-view :sessions="sessions" v-if="isListView"></list-view>
+    <calendar-view v-else></calendar-view>
   </div>
 </template>
 
 <script>
+import ListView from './components/ListView'
+import CalendarView from './components/CalendarView'
 export default {
   name: 'activity',
+  components: {
+    ListView,
+    CalendarView
+  },
   data: function () {
     return {
+      isListView: true,
+      textButton: 'Change to Calendar view',
       sessions: this.$store.state.user.sessions,
+    }
+  },
+  methods: {
+    changeView: function () {
+      this.isListView = !this.isListView
+      if (this.isListView) {
+        this.textButton = 'Change to Calendar view'
+      } else {
+        this.textButton = 'Change to List view'
+      }
     }
   },
   beforeCreate: function () {
     this.$store.dispatch('getUserSession')
-  },
-  methods: {
-    seeDetails: function (id) {
-      this.$store.dispatch('sessionDetails', id).then(() => {
-        this.$router.push('sessioninfo')
-      })
-    },
-    newRun: function () {
-      this.$router.push('dashboard')
-    }
   }
 }
 

@@ -61,12 +61,6 @@ const router = new Router({
           default: false,
         },
         {
-          name: 'calendar',
-          path: '/calendar',
-          component: lazyLoading('calendar/Calendar'),
-          default: false,
-        },
-        {
           name: 'wall',
           path: '/wall',
           component: lazyLoading('wall/Wall'),
@@ -75,7 +69,7 @@ const router = new Router({
         {
           name: 'sessioninfo',
           path: '/sessioninfo',
-          component: lazyLoading('activity/SessionInfo'),
+          component: lazyLoading('session/SessionInfo'),
           default: false,
         },
         {
