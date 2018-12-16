@@ -45,11 +45,13 @@ export default {
       dataOfSessionTemperature: [],
       dataOfSessionHumidities: [],
       dataOfSessionCo2: [],
+      dataOfSessionGPS: []
     }
   },
   beforeCreate: function () {
     this.$store.dispatch('getSessionData', 'gps').then(() => {
       this.session = this.$store.state.session.sessionInfo
+      this.dataOfSessionGPS = this.$store.state.session.sessionDataGPS
       this.$store.dispatch('getSessionData', 'temperatures').then(() => {
         this.dataOfSessionTemperature = this.$store.state.session.sessionDataTemp
         this.$store.dispatch('getSessionData', 'humidities').then(() => {
@@ -57,12 +59,16 @@ export default {
           this.$store.dispatch('getSessionData', 'co2').then(() => {
             this.dataOfSessionCo2 = this.$store.state.session.sessionDataCo2
             this.haveData = true
+            this.$store.commit('GPSdata', true)
           })
         })
       })
     }).catch(() => {
       this.$router.push('/activity')
     })
+  },
+  destroyed: function () {
+    this.$store.commit('GPSdata', false)
   },
   methods: {
 

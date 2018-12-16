@@ -5,8 +5,10 @@ const state = {
   sessionDataTemp: [],
   sessionDataHumidities: [],
   sessionDataCo2: [],
+  sessionDataGPS: [],
   sessionInfo: [],
-  sessionId: null
+  sessionId: null,
+  haveData: false
 }
 
 const mutations = {
@@ -21,12 +23,17 @@ const mutations = {
       state.sessionDataTemp = data
     } else if (typeOfMeasure === 'humidities') {
       state.sessionDataHumidities = data
+    } else if (typeOfMeasure === 'gps') {
+      state.sessionDataGPS = data
     } else {
       state.sessionDataCo2 = data
     }
   },
   changePrivacy (state) {
     state.sessionInfo.share = !state.sessionInfo.share
+  },
+  GPSdata (state, data) {
+    state.haveData = data
   }
 }
 
