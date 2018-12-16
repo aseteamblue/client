@@ -28,7 +28,9 @@ module.exports = {
         'components': path.resolve('src/components'),
         'services': path.resolve('src/services'),
         'directives': path.resolve('src/directives'),
-        'vuex-store': path.resolve('src/store')
+        'vuex-store': path.resolve('src/store'),
+        'styles': path.resolve(__dirname, 'src/styles')
+
       }
     },
   },

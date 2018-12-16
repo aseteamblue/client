@@ -1,118 +1,76 @@
 <template>
-  <div class="sessioninfo container-fluid scrollbar">
-    <h1>Details</h1>
-    <br/>
-    <table ref="table" border="1" id="tableInfo">
-      <tbody>
-        <tr>
-          <td>Title:</td>
-          <td>{{session._id}}</td>
-        </tr>
-        <tr>
-          <td>Start</td>
-          <td>{{session.dateStart}}</td>
-          <td>Stop</td>
-          <td>{{session.dateEnd}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div id="map"></div>
-    <table ref="table" border="1" id="tableInfo">
-      <tbody>
-        <tr>
-          <td>Av. speed:</td>
-          <td>{{session.averageSpeed}}</td>
-        </tr>
-        <tr>
-          <td>Av. temperature:</td>
-          <td>{{session.averageTemperature}}</td>
-        </tr>
-        <tr>
-          <td>Av. humidity:</td>
-          <td>{{session.averageHumidity}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <!-- ### $App Screen Content ### -->
+        <main class='main-content bgc-grey-100'>
+          <div id='mainContent'>
+            <div class="row gap-20 masonry pos-r">
+
+              <map-view :session="session"></map-view>
+              <average-statistics :session="session"></average-statistics>
+              <div class="container-fluid" v-if="haveData">
+                <div class="row">
+                  <line-chart :dataOfSession="dataOfSessionTemperature" :index="1"></line-chart>
+                  <line-chart :dataOfSession="dataOfSessionHumidities" :index="2"></line-chart>
+                  <line-chart :dataOfSession="dataOfSessionCo2" :index="3"></line-chart>
+                </div>
+              </div>
+              <div class="container-fluid" v-if="haveData">
+                <div class="row">
+                  <histogram-chart :dataOfSession="dataOfSessionTemperature" :index="4"></histogram-chart>
+                  <histogram-chart :dataOfSession="dataOfSessionHumidities" :index="5"></histogram-chart>
+                  <histogram-chart :dataOfSession="dataOfSessionCo2" :index="6"></histogram-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
 </template>
 
-<style lang="scss">
-  @import "../../../node_modules/leaflet/dist/leaflet.css";
-</style>
-
 <script>
+import AverageStatistics from './components/AverageStatistics'
+import MapView from './components/Map'
+import LineChart from './components/LineChart'
+import HistogramChart from './components/HistogramChart'
 export default {
-  name: 'sessioninfo',
+  name: 'session',
+  components: {
+    AverageStatistics,
+    MapView,
+    LineChart,
+    HistogramChart,
+  },
   data: function () {
     return {
       haveData: false,
-      mapCreated: false,
-      session: [],
-      map: null
+      session: {},
+      dataOfSessionTemperature: [],
+      dataOfSessionHumidities: [],
+      dataOfSessionCo2: [],
     }
   },
   beforeCreate: function () {
     this.$store.dispatch('getSessionData', 'gps').then(() => {
       this.session = this.$store.state.session.sessionInfo
-      this.haveData = true
+      this.$store.dispatch('getSessionData', 'temperatures').then(() => {
+        this.dataOfSessionTemperature = this.$store.state.session.sessionDataTemp
+        this.$store.dispatch('getSessionData', 'humidities').then(() => {
+          this.dataOfSessionHumidities = this.$store.state.session.sessionDataHumidities
+          this.$store.dispatch('getSessionData', 'co2').then(() => {
+            this.dataOfSessionCo2 = this.$store.state.session.sessionDataCo2
+            this.haveData = true
+          })
+        })
+      })
+    }).catch(() => {
+      this.$router.push('/activity')
     })
-  },
-  mounted: function () {
-    var L = require('leaflet')
-    var esri = require('esri-leaflet')
-    delete L.Icon.Default.prototype._getIconUrl
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-      iconUrl: require('leaflet/dist/images/marker-icon.png'),
-      shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-    })
-
-    this.map = L.map('map', {
-      center: [0, 0],
-      zoom: 0,
-      setView: true
-    })
-    esri.basemapLayer('Streets').addTo(this.map)
-    this.mapCreated = true
-    this.drawLine()
   },
   methods: {
-    drawLine: function () {
-      var L = require('leaflet')
-      while (this.mapCreated !== true && this.haveData !== true) {
-        this.sleep(250)
-      }
-      var gpsPoints = this.$store.state.session.sessionData
-      if (gpsPoints === null || gpsPoints === undefined) {
-        return
-      }
-      var nbGps = gpsPoints.length
-      if (nbGps !== 0) {
-        L.marker(gpsPoints[0].data).addTo(this.map)
-        var pointList = []
-        for (var i = 0; i < nbGps; i++) {
-          pointList.push(gpsPoints[i].data)
-        }
-        var firstpolyline = new L.Polyline(pointList, {
-          color: 'red',
-          weight: 3,
-          opacity: 0.5,
-          smoothFactor: 1
-        })
-        firstpolyline.addTo(this.map)
-        L.marker(gpsPoints[nbGps - 1].data).addTo(this.map)
-        this.map.flyTo(new L.LatLng(gpsPoints[0].data.lat, gpsPoints[0].data.lng), 16)
-      }
-    }
+
   }
 }
 </script>
 
-<style lang="scss" scoped>
-  #map {
-      height: 50vh;
-      width: 50vw;
-      margin: 0;
-      padding: 0;
-    }
+<style lang="scss">
+@import "~styles/index.scss";
+@import "../../../node_modules/leaflet/dist/leaflet.css";
 </style>
