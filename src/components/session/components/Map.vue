@@ -20,7 +20,7 @@
             Change the privacy to public
           </button>
         </div>
-        <div id="map" style="width:100%; height: 450px"></div>
+        <div id="mapPlace" style="width:100%; height: 450px"></div>
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: 'map',
+  name: 'mapDisplay',
   props: {
     session: {
       type: Object,
@@ -53,7 +53,7 @@ export default {
       shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
     })
 
-    this.map = L.map('map', {
+    this.map = L.map('mapPlace', {
       center: [0, 0],
       zoom: 0,
       setView: true
