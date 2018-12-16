@@ -58,7 +58,7 @@
                 <div class="panel-body">
                   <ul class="list-group">
                     <li class="list-group-item" v-for="s in trophies" :key="s.dateStart">
-                    <strong>{{s.desciption}}</strong>
+                    <strong>{{s}}</strong>
                     </li>
                     <strong v-if="trophies.length === 0">No trophy yet</strong>
                   </ul>
@@ -76,7 +76,7 @@
           <div class="text-center">
             <i class="fas fa-running fa-2x"></i>
             <h3>5 last sessions</h3>
-            <b-table responsive striped hover :items="rows.slice(0,5)" :fields="fields">
+            <b-table responsive striped hover :items="rows.slice(0,5)" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
               <template slot="duration" slot-scope="row">
                 {{msToTime(row.item.duration)}}
               </template>
@@ -107,7 +107,9 @@ export default {
   name: 'dashboard',
   data () {
     return {
-      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],
+      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],    
+      sortBy: 'dateStart',
+      sortDesc: true,
       rows: this.$store.state.user.sessions,
       username: this.$store.state.auth.user.username,
       totalDistance: this.$store.state.auth.user.totalDistance,

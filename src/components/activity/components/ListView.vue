@@ -2,7 +2,7 @@
   <div class="text-center">
     <i class="fas fa-running fa-2x"></i>
     <h3>All sessions</h3>
-    <b-table responsive striped hover :items="sessions" :fields="fields">
+    <b-table responsive striped hover :items="sessions" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
       <template slot="totalDistance" slot-scope="row">
       {{row.item.totalDistance.toFixed(3)}} km
       </template>
@@ -25,13 +25,15 @@ export default {
   props: {
     sessions: {
       type: Array,
-      required: true
+      required: true,
     // default: 'Lucas'
     }
   },
   data () {
     return {
-      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],
+      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],      
+      sortBy: 'dateStart',
+      sortDesc: true,
     }
   },
   methods: {
