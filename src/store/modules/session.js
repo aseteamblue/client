@@ -2,7 +2,9 @@ import axios from 'axios'
 import config from '../../../config'
 
 const state = {
-  sessionData: [],
+  sessionDataTemp: [],
+  sessionDataHumidities: [],
+  sessionDataCo2: [],
   sessionInfo: [],
   sessionId: null
 }
@@ -14,8 +16,14 @@ const mutations = {
   loadSessionInfo (state, data) {
     state.sessionInfo = data
   },
-  loadSessionData (state, data) {
-    state.sessionData = data
+  loadSessionData (state, { data, typeOfMeasure }) {
+    if (typeOfMeasure === 'temperatures') {
+      state.sessionDataTemp = data
+    } else if (typeOfMeasure === 'humidities') {
+      state.sessionDataHumidities = data
+    } else {
+      state.sessionDataCo2 = data
+    }
   },
   changePrivacy (state) {
     state.sessionInfo.share = !state.sessionInfo.share
@@ -32,9 +40,9 @@ const actions = {
       axios({ url: config.api_url + '/sessions/' + id, method: 'GET' })
         .then(resp => {
           commit('loadSessionInfo', resp.data)
-          axios({ url: config.api_url + '/sessions/' + id + '/' + typeOfMeasure + '/', method: 'GET' })
+          axios({ url: config.api_url + '/sessions/' + id + '/' + typeOfMeasure, method: 'GET' })
             .then(resp => {
-              commit('loadSessionData', resp.data)
+              commit('loadSessionData', { data: resp.data, typeOfMeasure })
               resolve(resp)
             })
             .catch(err => {
