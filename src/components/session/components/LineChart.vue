@@ -31,17 +31,38 @@ export default {
     this.createLineChart()
   },
   methods: {
+    formatDate: function (date) {
+      const d = new Date(date)
+      return d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes()
+    },
 
     createLineChart: function () {
       var width = 960
       var height = 500
       var values = []
       for (var d in this.dataOfSession) {
-        values.push(this.dataOfSession[d].data)
+        if (this.dataOfSession[d].message_type !== 'gas') {
+          values.push(this.dataOfSession[d].data)
+        } else {
+          values.push(parseInt(this.dataOfSession[d].data.substr(0, this.dataOfSession[d].data.indexOf('/'))))
+        }
       }
       var timestamps = []
       for (var z in this.dataOfSession) {
         timestamps.push(this.dataOfSession[z].date)
+      }
+
+      if (values.length === 0) {
+        var errorsvg = d3.select('#chart' + this.index)
+          .append('svg')
+          .attr('id', 'lineChart' + this.index)
+          .attr('class', 'deleteAll')
+          .attr('viewBox', '0,0,' + width + ',' + height + '')
+
+        errorsvg.append('text')
+          .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')')
+          .text('No data available')
+        return
       }
 
       // Creation of the SVG
@@ -91,6 +112,9 @@ export default {
         .x(d => xScale(new Date(d.date)))
         .y(d => yScale(parseInt(d.data)))
 
+      // Ordinal Scale for line coloring
+      const color = d3.scaleOrdinal(d3.schemeCategory10)
+
       var label = ''
       var unit = ''
       switch (this.dataOfSession[0].message_type) {
@@ -129,7 +153,7 @@ export default {
       lineChart.append('path')
         .attr('d', lineFn(this.dataOfSession))
         .style('fill', 'none')
-        .style('stroke', 'black')
+        .style('stroke', (d, i) => color(i))
         .style('stroke-width', '1')
         .attr('id', 'test')
         .attr('min', globalInfo.min)
@@ -141,20 +165,24 @@ export default {
         .attr('standardDeviation', globalInfo.standardDeviation)
         .attr('unit', unit)
         .attr('class', 'line')
-        .on('mouseover', showInfo)
-        .on('mouseout', hide)
 
       // Y-axis label
       svg.append('g')
         .append('text')
         .attr('transform', 'translate(' + ((margin.left / 2) - 5) + ',' + innerHeight / 2 + ')rotate(-90)')
         .text(label + ' ' + unit)
+        .style('font-weight', 'bold')
+        .style('font-family', 'system-ui')
+        .style('font-size', '20px')
 
       // X-axis label
       svg.append('g')
         .append('text')
         .attr('transform', 'translate(' + (margin.left) + ',' + ((innerHeight + margin.top + marginTimeLine.top) / 2) + ')')
-        .text('From: ' + minDate.toUTCString() + ' to: ' + maxDate.toUTCString())
+        .text('From: ' + this.formatDate(minDate) + ' to: ' + this.formatDate(maxDate))
+        .style('font-weight', 'bold')
+        .style('font-family', 'system-ui')
+        .style('font-size', '18px')
 
       // Append a group that will contain the axes
       var focus = svg.append('g')
@@ -168,60 +196,56 @@ export default {
         .attr('stroke-opacity', '0.7')
         .attr('shape-rendering', 'crispEdges')
 
-      function showInfo () {
         // Create a group that will contain the infos of each line
-        var svgId = '#' + 'session' + this.index
-        var menu = d3.select(svgId)
-          .append('g')
-          .attr('id', 'informationMenu')
-          .attr('fill', d3.select(this).style('stroke'))
-          .attr('font-family', 'Times New Roman')
+        // var svgId = '#' + 'session' + this.index
+      var menu = svg.append('g')
+        .attr('id', 'informationMenu')
+        .attr('fill', 'black')
+        .style('font-family', 'system-ui')
 
         // Append the title of the rectangle
-        menu.append('text')
-          .attr('x', (width - margin.right + width) / 2)
-          .attr('y', margin.top + 30)
-          .attr('text-anchor', 'middle')
-          .attr('text-decoration', 'underline')
-          .attr('font-size', '15')
-          .text('About the selected session')
+      menu.append('text')
+        .attr('x', (width - margin.right + width) / 2)
+        .attr('y', margin.top + 30)
+        .attr('text-anchor', 'middle')
+        .attr('font-weight', 'bold')
+        .attr('font-size', '19')
+        .text('Global information')
 
         // Minimum value
-        menu.append('text')
-          .attr('x', width - margin.right + 10)
-          .attr('y', margin.top + 70)
-          .text('Minimum value: ' + d3.select(this).attr('min') + ' ' + d3.select(this).attr('unit'))
+      menu.append('text')
+        .attr('x', width - margin.right + 10)
+        .attr('y', margin.top + 70)
+        .text('Minimum value: ' + globalInfo.min.toFixed(3) + ' ' + unit)
+        .attr('font-size', '16')
 
         // Maximum value
-        menu.append('text')
-          .attr('x', width - margin.right + 10)
-          .attr('y', margin.top + 90)
-          .text('Maximum value: ' + d3.select(this).attr('max') + ' ' + d3.select(this).attr('unit'))
+      menu.append('text')
+        .attr('x', width - margin.right + 10)
+        .attr('y', margin.top + 90)
+        .text('Maximum value: ' + globalInfo.max.toFixed(3) + ' ' + unit)
+        .attr('font-size', '16')
 
         // Mean
-        menu.append('text')
-          .attr('x', width - margin.right + 10)
-          .attr('y', margin.top + 110)
-          .text('Mean (rounded): ' + Math.round(d3.select(this).attr('mean') * 100) / 100 + ' ' + d3.select(this).attr('unit'))
+      menu.append('text')
+        .attr('x', width - margin.right + 10)
+        .attr('y', margin.top + 110)
+        .text('Mean:' + globalInfo.mean.toFixed(3) + ' ' + unit)
+        .attr('font-size', '16')
 
         // Median value
-        menu.append('text')
-          .attr('x', width - margin.right + 10)
-          .attr('y', margin.top + 130)
-          .text('Median:  ' + d3.select(this).attr('median') + ' ' + d3.select(this).attr('unit'))
+      menu.append('text')
+        .attr('x', width - margin.right + 10)
+        .attr('y', margin.top + 130)
+        .text('Median:  ' + globalInfo.median.toFixed(3) + ' ' + unit)
+        .attr('font-size', '16')
 
         // Standard Deviation
-        menu.append('text')
-          .attr('x', width - margin.right + 10)
-          .attr('y', margin.top + 150)
-          .text('Standard Deviation (rounded): ' + Math.round(d3.select(this).attr('standardDeviation') * 100) / 100 + ' ' + d3.select(this).attr('unit'))
-      }
-
-      // function hide is used when the mouse leaves each line to redraw the line
-      function hide () {
-        d3.selectAll('#informationMenu').remove()
-        d3.select(this).style('stroke-width', '1')
-      }
+      menu.append('text')
+        .attr('x', width - margin.right + 10)
+        .attr('y', margin.top + 150)
+        .text('Standard Deviation: ' + globalInfo.standardDeviation.toFixed(3) + ' ' + unit)
+        .attr('font-size', '16')
     },
   }
 }

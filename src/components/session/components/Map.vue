@@ -20,7 +20,7 @@
             Change the privacy to public
           </button>
         </div>
-        <div id="map" style="width:100%; height: 450px"></div>
+        <div id="mapPlace" style="width:100%; height: 450px"></div>
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: 'map',
+  name: 'mapDisplay',
   props: {
     session: {
       type: Object,
@@ -53,7 +53,7 @@ export default {
       shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
     })
 
-    this.map = L.map('map', {
+    this.map = L.map('mapPlace', {
       center: [0, 0],
       zoom: 0,
       setView: true
@@ -71,12 +71,12 @@ export default {
         this.$router.push('/activity')
       })
     },
-    drawLine: function () {
+    drawLine: async function () {
       var L = require('leaflet')
-      while (this.mapCreated !== true && this.haveData !== true) {
-        this.sleep(250)
+      while (this.mapCreated === false || this.$store.state.session.haveData === false) {
+        await this.sleep(250)
       }
-      var gpsPoints = this.session.sessionData
+      var gpsPoints = this.$store.state.session.sessionDataGPS
       if (gpsPoints === null || gpsPoints === undefined) {
         return
       }
@@ -97,6 +97,11 @@ export default {
         L.marker(gpsPoints[nbGps - 1].data).addTo(this.map)
         this.map.flyTo(new L.LatLng(gpsPoints[0].data.lat, gpsPoints[0].data.lng), 16)
       }
+    },
+    sleep: function (ms){
+      return new Promise(resolve=>{
+        setTimeout(resolve,ms)
+    })
     }
   }
 }

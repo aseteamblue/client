@@ -42,7 +42,24 @@ export default {
       // Creation of an array containing all values of the histogram
       var allValues = []
       for (var d in this.dataOfSession) {
-        allValues.push(this.dataOfSession[d].data)
+        if (this.dataOfSession[d].message_type !== 'gas') {
+          allValues.push(this.dataOfSession[d].data)
+        } else {
+          allValues.push(parseInt(this.dataOfSession[d].data.substr(0, this.dataOfSession[d].data.indexOf('/'))))
+        }
+      }
+
+      if (allValues.length === 0) {
+        var errorsvg = d3.select('#chart' + this.index)
+          .append('svg')
+          .attr('id', 'histogram' + this.index)
+          .attr('class', 'deleteAll')
+          .attr('viewBox', '0,0,' + width + ',' + height + '')
+
+        errorsvg.append('text')
+          .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')')
+          .text('No data available')
+        return
       }
 
       // linear Scale for x-axis
@@ -107,20 +124,13 @@ export default {
           return formatCount((d.length / totalNumberOfMeasure) * 100) + '%'
         })
         .style('fill', '#f4a041')
-        .style('font-size', '10px')
+        .style('font-size', '13px')
 
       // Append the x-axis at the bottom of the graph
       bars1.append('g')
         .attr('class', 'axis axis--x')
         .attr('transform', 'translate(0,' + (innerHeight) + ')')
         .call(d3.axisBottom(x))
-
-      svg
-        .append('text')
-        .attr('transform', 'translate(' + (width / 2) + ',' + (margin.top / 2) + ')')
-        .style('font-weight', 'bold')
-        .style('text-anchor', 'middle')
-        .text('Distribution of the values')
 
       var label = ''
       var unit = ''
@@ -149,10 +159,21 @@ export default {
           unit = '(without unit)'
       }
 
+      svg
+        .append('text')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (margin.top / 2) + ')')
+        .style('font-weight', 'bold')
+        .style('text-anchor', 'middle')
+        .style('font-size', '20px')
+        .style('font-family', 'system-ui')
+        .style('fill', 'black')
+        .text('Distribution of the values [' + label + ']')
+
       // x-axis label
       svg
         .append('text')
         .attr('transform', 'translate(' + (margin.left + innerWidth / 2) + ',' + (height - 20) + ')')
+        .style('font-size', '16px')
         .text(label + ' ' + unit)
 
       // Creation of the div that will contain the information about each bar
