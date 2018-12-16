@@ -77,6 +77,9 @@ export default {
         this.sleep(250)
       }
       var gpsPoints = this.session.sessionData
+      if (gpsPoints === null || gpsPoints === undefined) {
+        return
+      }
       var nbGps = gpsPoints.length
       if (nbGps !== 0) {
         L.marker(gpsPoints[0].data).addTo(this.map)
