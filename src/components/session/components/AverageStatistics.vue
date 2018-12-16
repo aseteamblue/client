@@ -77,7 +77,28 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="masonry-item w-100 gap-20">
+                  <div class='col-md-6'>
+                    <div class="layers bd bgc-white p-20">
+                      <div class="layer w-100 mB-10">
+                        <h6 class="lh-1">Feedback</h6>
+                      </div>
+                      <div class="layer w-100">
+                        <div class="peers ai-sb fxw-nw">
+                          <div class="peer peer-greed">
+                            <i class="fas fa-2x fa-smile c-yellow-500"></i>
+                          </div>
+                          <div class="peer">
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-yellow-500 c-black-500">You ran faster than last time ! Well done !</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
 </template>
 
 <script>

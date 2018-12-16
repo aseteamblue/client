@@ -58,7 +58,7 @@
                 <div class="panel-body">
                   <ul class="list-group">
                     <li class="list-group-item" v-for="s in trophies" :key="s.dateStart">
-                    <strong>{{s}}</strong>
+                    <strong>{{s.description}}</strong>
                     </li>
                     <strong v-if="trophies.length === 0">No trophy yet</strong>
                   </ul>
@@ -115,14 +115,18 @@ export default {
       totalDistance: this.$store.state.auth.user.totalDistance,
       totalTime: this.$store.state.auth.user.totalTime,
       user: this.$store.state.auth.user,
-      trophies: this.$store.state.auth.user.trophies,
+      trophies: this.$store.state.trophies.trophies,
       thingyName: this.$store.state.auth.user.thingyUri,
       sessions: this.$store.state.user.sessions,
 
     }
   },
   beforeCreate: function () {
-    this.$store.dispatch('getUserSession')
+    this.$store.dispatch('getUserSession').then(() => {
+      this.$store.dispatch('getTrophies', this.$store.state.auth.user.trophies).then(() => {
+        this.trophies = this.$store.state.trophies.trophies
+      })
+    })
   },
 
   methods: {
