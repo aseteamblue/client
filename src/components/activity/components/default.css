@@ -9,9 +9,13 @@ having to override as much.
 
 /* Header */
 
-.theme-default .cv-header,
+.theme-default .cv-header {
+	background-color: #1b1a1f;
+	color: #ffffff;
+}
 .theme-default .cv-header-day {
-	background-color: #f0f0f0;
+	background-color: #252429;
+	color: #ffffff;
 }
 
 .theme-default .cv-header .periodLabel {
@@ -20,7 +24,9 @@ having to override as much.
 }
 
 .theme-default .cv-header button {
-	color: #7f7f7f;
+	color: #ffffff;
+	font-weight: bold;
+	background-color: #646c74;
 }
 
 .theme-default .cv-header button:disabled {
@@ -33,15 +39,18 @@ having to override as much.
 .theme-default .cv-day.today {
 	color: white;
 	font-weight: bold;
-	background-color: #9c27b0;
+	background-color: #643b9b;
 }
 
-.theme-default .cv-day.past {
-	background-color: #fafafa;
+.theme-default .cv-day.past,
+.theme-default .cv-day {
+	background-color: #eff0f2;
+	font-weight: bold;
 }
 
 .theme-default .cv-day.outsideOfMonth {
-	background-color: #e7e7e7;
+	background-color: #585d66;
+	color: white;
 }
 
 /* Events */
@@ -49,8 +58,9 @@ having to override as much.
 .theme-default .cv-event {
 	border-color: #e0e0f0;
 	border-radius: 0.5em;
-	background-color: #f7e7ff;
+	background-color: #ffffff;
 	text-overflow: ellipsis;
+	font-weight: bold;
 }
 
 .theme-default .cv-event.purple {
@@ -100,7 +110,7 @@ having to override as much.
 }
 
 #global {
-  background-color: #f7fcff;
+  background-color: #ffffff;
   min-height: 100%;
   margin-left: 1px;
   padding-left: 1%;

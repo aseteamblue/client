@@ -1,6 +1,5 @@
 <template>
   <div class="app-layout" v-bind:class="{ collapsed: isCollapsed }">
-<ion-icon name="add"></ion-icon>
     <sidebar-menu width="200px" :menu="menu" @collapse="onCollapse" />
     <router-view></router-view>
       <!-- End of a row -->
@@ -32,16 +31,6 @@ export default {
           href: '/activity',
           title: 'Activity',
           icon: 'fas fa-hiking',
-        },
-        {
-          href: '/statistics',
-          title: 'Statistics',
-          icon: 'fas fa-chart-bar',
-        },
-        {
-          href: '/calendar',
-          title: 'Calendar',
-          icon: 'fas fa-calendar-alt',
         },
         {
           href: '/wall',
