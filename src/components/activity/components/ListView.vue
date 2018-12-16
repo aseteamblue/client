@@ -3,6 +3,9 @@
     <i class="fas fa-running fa-2x"></i>
     <h3>All sessions</h3>
     <b-table responsive striped hover :items="sessions" :fields="fields">
+      <template slot="totalDistance" slot-scope="row">
+      {{row.item.totalDistance.toFixed(3)}} km
+      </template>
       <template slot="duration" slot-scope="row">
         {{ msToTime(row.item.duration) }}
       </template>

@@ -37,11 +37,28 @@ export default {
       var height = 500
       var values = []
       for (var d in this.dataOfSession) {
-        values.push(this.dataOfSession[d].data)
+        if (this.dataOfSession[d].message_type !== 'gas') {
+          values.push(this.dataOfSession[d].data)
+        } else {
+          values.push(parseInt(this.dataOfSession[d].data.substr(0, this.dataOfSession[d].data.indexOf('/'))))
+        }
       }
       var timestamps = []
       for (var z in this.dataOfSession) {
         timestamps.push(this.dataOfSession[z].date)
+      }
+
+      if (values.length === 0) {
+        var errorsvg = d3.select('#chart' + this.index)
+          .append('svg')
+          .attr('id', 'lineChart' + this.index)
+          .attr('class', 'deleteAll')
+          .attr('viewBox', '0,0,' + width + ',' + height + '')
+
+        errorsvg.append('text')
+          .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')')
+          .text('No data available')
+        return
       }
 
       // Creation of the SVG
