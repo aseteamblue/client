@@ -16,6 +16,9 @@ const mutations = {
   },
   loadSessionData (state, data) {
     state.sessionData = data
+  },
+  changePrivacy (state) {
+    state.sessionInfo.share = !state.sessionInfo.share
   }
 }
 
@@ -45,6 +48,17 @@ const actions = {
   },
   sessionDetails ({ commit }, id) {
     commit('changeId', id)
+  },
+  changePrivacy ({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios.get(config.api_url + '/sessions/' + state.sessionId + '/privacy')
+        .then(resp => {
+          commit('changePrivacy')
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 
 }

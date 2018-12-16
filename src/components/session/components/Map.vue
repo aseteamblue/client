@@ -3,6 +3,23 @@
   <div class="row">
     <div class="col-md-12">
       <div class="bgc-white bd bdrs-3 p-20 mB-20">
+        <div>
+          <h6 class="c-grey-900 mB-20" style="float:left;">{{session.title}}</h6>
+          <button type="button" style="float:right"
+            v-if="this.session.share"
+            v-on:click="changeSessionStatus"
+            class="btn cur-p btn-danger"
+          >
+            Change the privacy to private
+          </button>
+          <button type="button" style="float:right"
+            v-else
+            v-on:click="changeSessionStatus"
+            class="btn cur-p btn-primary"
+          >
+            Change the privacy to public
+          </button>
+        </div>
         <div id="map" style="width:100%; height: 450px"></div>
       </div>
     </div>
@@ -23,7 +40,7 @@ export default {
   data: function () {
     return {
       mapCreated: false,
-      map: null
+      map: null,
     }
   },
   mounted: function () {
@@ -46,6 +63,14 @@ export default {
     this.drawLine()
   },
   methods: {
+    changeSessionStatus: function () {
+      this.$store.dispatch('changePrivacy')
+      this.$store.dispatch('getSessionData', 'gps').then(() => {
+        this.session = this.$store.state.session.sessionInfo
+      }).catch(() => {
+        this.$router.push('/activity')
+      })
+    },
     drawLine: function () {
       var L = require('leaflet')
       while (this.mapCreated !== true && this.haveData !== true) {

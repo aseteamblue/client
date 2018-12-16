@@ -3,6 +3,7 @@
         <main class='main-content bgc-grey-100'>
           <div id='mainContent'>
             <div class="row gap-20 masonry pos-r">
+
               <map-view :session="session"></map-view>
               <average-statistics :session="session"></average-statistics>
 
@@ -30,6 +31,8 @@ export default {
     this.$store.dispatch('getSessionData', 'gps').then(() => {
       this.session = this.$store.state.session.sessionInfo
       this.haveData = true
+    }).catch(() => {
+      this.$router.push('/activity')
     })
   },
   methods: {
