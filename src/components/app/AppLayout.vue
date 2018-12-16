@@ -22,21 +22,21 @@ export default {
           title: 'Dashboard',
           icon: 'fas fa-tachometer-alt',
         },
-        {
+        /*{
           href: '/user',
           title: 'User\'s profile',
           icon: 'fas fa-user',
-        },
+        },*/
         {
           href: '/activity',
           title: 'Activity',
           icon: 'fas fa-hiking',
         },
-        {
+        /*{
           href: '/wall',
           title: 'My wall',
           icon: 'fas fa-newspaper',
-        },
+        },*/
         {
           href: '/logout',
           title: 'Logout',

@@ -18,6 +18,10 @@ const mutations = {
   },
   addSessionData (state, data) {
     state.sessionData.push(data)
+  },
+  sortSession (state) {
+    state.sessions.sort((a, b) => (a.dateStart > b.dateStart) ? 1 : (b.dateStart < a.dateStart) ? -1 : 0)
+    state.sessions.reverse()
   }
 }
 
@@ -46,6 +50,7 @@ const actions = {
           info['endDate'] = info['dateEnd']
           info['id'] = info['_id']
           commit('addSession', info)
+          commit('sortSession')
           resolve(resp)
         })
         .catch(err => {
