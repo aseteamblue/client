@@ -8,16 +8,16 @@
               <average-statistics :session="session"></average-statistics>
               <div class="container-fluid" v-if="haveData">
                 <div class="row">
-                  <line-chart :dataOfSession="dataOfSessionTemperature" :index="1"></line-chart>
-                  <line-chart :dataOfSession="dataOfSessionHumidities" :index="2"></line-chart>
-                  <line-chart :dataOfSession="dataOfSessionCo2" :index="3"></line-chart>
+                  <line-chart v-if="dataOfSessionTemperature.length" :dataOfSession="dataOfSessionTemperature" :index="1"></line-chart>
+                  <line-chart v-if="dataOfSessionHumidities.length" :dataOfSession="dataOfSessionHumidities" :index="2"></line-chart>
+                  <line-chart v-if="dataOfSessionCo2.length" :dataOfSession="dataOfSessionCo2" :index="3"></line-chart>
                 </div>
               </div>
               <div class="container-fluid" v-if="haveData">
                 <div class="row">
-                  <histogram-chart :dataOfSession="dataOfSessionTemperature" :index="4"></histogram-chart>
-                  <histogram-chart :dataOfSession="dataOfSessionHumidities" :index="5"></histogram-chart>
-                  <histogram-chart :dataOfSession="dataOfSessionCo2" :index="6"></histogram-chart>
+                  <histogram-chart v-if="dataOfSessionTemperature.length" :dataOfSession="dataOfSessionTemperature" :index="4"></histogram-chart>
+                  <histogram-chart v-if="dataOfSessionHumidities.length" :dataOfSession="dataOfSessionHumidities" :index="5"></histogram-chart>
+                  <histogram-chart v-if="dataOfSessionCo2.length" :dataOfSession="dataOfSessionCo2" :index="6"></histogram-chart>
                 </div>
               </div>
             </div>
