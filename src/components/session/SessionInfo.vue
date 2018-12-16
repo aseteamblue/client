@@ -4,7 +4,7 @@
           <div id='mainContent'>
             <div class="row gap-20 masonry pos-r">
 
-              <map-view :session="session"></map-view>
+              <map-view v-if="haveData" :session="session"></map-view>
               <average-statistics :session="session"></average-statistics>
               <div class="container-fluid" v-if="haveData">
                 <div class="row">
