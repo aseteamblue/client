@@ -29,6 +29,16 @@ const mutations = {
       state.sessionDataCo2 = data
     }
   },
+  sortSessionData (state) {
+    state.sessionDataTemp.sort((a, b) => (a.date > b.date) ? 1 : (b.date < a.date) ? -1 : 0)
+    state.sessionDataTemp.reverse()
+    state.sessionDataHumidities.sort((a, b) => (a.date > b.date) ? 1 : (b.date < a.date) ? -1 : 0)
+    state.sessionDataHumidities.reverse()
+    state.sessionDataGPS.sort((a, b) => (a.date > b.date) ? 1 : (b.date < a.date) ? -1 : 0)
+    state.sessionDataGPS.reverse()
+    state.sessionDataCo2.sort((a, b) => (a.date > b.date) ? 1 : (b.date < a.date) ? -1 : 0)
+    state.sessionDataCo2.reverse()
+  },
   changePrivacy (state) {
     state.sessionInfo.share = !state.sessionInfo.share
   },
@@ -50,6 +60,7 @@ const actions = {
           axios({ url: config.api_url + '/sessions/' + id + '/' + typeOfMeasure, method: 'GET' })
             .then(resp => {
               commit('loadSessionData', { data: resp.data, typeOfMeasure })
+              commit('sortSessionData')
               resolve(resp)
             })
             .catch(err => {
