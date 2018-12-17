@@ -13,7 +13,7 @@
                             <i class="fas fa-2x fa-tachometer-alt c-green-500"></i>
                           </div>
                           <div class="peer">
-                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">{{session.averageSpeed}} km/h</span>
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">{{session.averageSpeed.toFixed(3)}} km/h</span>
                           </div>
                         </div>
                       </div>
@@ -32,7 +32,7 @@
                             <i class="fas fa-2x fa-thermometer-three-quarters c-red-500"></i>
                           </div>
                           <div class="peer">
-                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">{{session.averageTemperature}} degrees</span>
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">{{session.averageTemperature.toFixed(3)}} degrees</span>
                           </div>
                         </div>
                       </div>
@@ -51,7 +51,7 @@
                             <i class="fas fa-2x fa-map-marked-alt c-purple-500"></i>
                           </div>
                           <div class="peer">
-                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">{{session.totalDistance}} km</span>
+                            <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">{{session.totalDistance.toFixed(3)}} km</span>
                           </div>
                         </div>
                       </div>
