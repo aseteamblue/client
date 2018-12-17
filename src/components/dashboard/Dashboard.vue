@@ -77,6 +77,9 @@
             <i class="fas fa-running fa-2x"></i>
             <h3>5 last sessions</h3>
             <b-table responsive striped hover :items="rows.slice(0,5)" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
+               <template slot="totalDistance" slot-scope="row">
+                {{row.item.totalDistance.toFixed(3)}} km
+              </template>
               <template slot="duration" slot-scope="row">
                 {{msToTime(row.item.duration)}}
               </template>
@@ -107,7 +110,7 @@ export default {
   name: 'dashboard',
   data () {
     return {
-      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],    
+      fields: ['title', 'totalDistance', 'duration', 'dateStart', 'seeDetails'],
       sortBy: 'dateStart',
       sortDesc: true,
       rows: this.$store.state.user.sessions,
